@@ -1,0 +1,11 @@
+C:\Users\sasha\lab\SmartHome.Common\bin\Debug\net8.0\SmartHome.Common.deps.json
+C:\Users\sasha\lab\SmartHome.Common\bin\Debug\net8.0\SmartHome.Common.dll
+C:\Users\sasha\lab\SmartHome.Common\bin\Debug\net8.0\SmartHome.Common.pdb
+C:\Users\sasha\lab\SmartHome.Common\obj\Debug\net8.0\SmartHome.Common.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\sasha\lab\SmartHome.Common\obj\Debug\net8.0\SmartHome.Common.AssemblyInfoInputs.cache
+C:\Users\sasha\lab\SmartHome.Common\obj\Debug\net8.0\SmartHome.Common.AssemblyInfo.cs
+C:\Users\sasha\lab\SmartHome.Common\obj\Debug\net8.0\SmartHome.Common.csproj.CoreCompileInputs.cache
+C:\Users\sasha\lab\SmartHome.Common\obj\Debug\net8.0\SmartHome.Common.dll
+C:\Users\sasha\lab\SmartHome.Common\obj\Debug\net8.0\refint\SmartHome.Common.dll
+C:\Users\sasha\lab\SmartHome.Common\obj\Debug\net8.0\SmartHome.Common.pdb
+C:\Users\sasha\lab\SmartHome.Common\obj\Debug\net8.0\ref\SmartHome.Common.dll
