@@ -29,3 +29,12 @@ $ dotnet run --project SmartHome.Console
 
 Дані з бази даних:
 - Пристрій: Смарт-Лампа БД, Кімната: 1
+
+
+
+
+LAB4
+<img width="1406" height="833" alt="image" src="https://github.com/user-attachments/assets/51c083fb-1dac-420f-8d9f-f723f6aba15e" />
+<img width="1408" height="891" alt="image" src="https://github.com/user-attachments/assets/6ac9dcb5-b8f0-44c1-b2ae-eaffa90ea1d9" />
+<img width="1457" height="852" alt="image" src="https://github.com/user-attachments/assets/aea3b7dd-d01d-429c-9329-07dd9fc1c0b1" />
+
