@@ -1,60 +1,66 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Text.Json;
-using System.Threading;
 using System.Threading.Tasks;
+using SmartHome.Infrastructure; // Додаємо посилання на репозиторій
 
 namespace SmartHome.Common
 {
-    public interface ICrudServiceAsync<T> : IEnumerable<T>
+    public interface ICrudServiceAsync<T> : IEnumerable<T> where T : class
     {
         Task<bool> CreateAsync(T element);
-        Task<T> ReadAsync(Guid id);
+        Task<T> ReadAsync(int id); // В ЛР3 зазвичай переходимо на int Id для БД
         Task<IEnumerable<T>> ReadAllAsync();
         Task<IEnumerable<T>> ReadAllAsync(int page, int amount);
         Task<bool> UpdateAsync(T element);
         Task<bool> RemoveAsync(T element);
-        Task<bool> SaveAsync();
     }
 
     public class GenericCrudServiceAsync<T> : ICrudServiceAsync<T> where T : class
     {
-        private List<T> _items = new List<T>();
-        private readonly SemaphoreSlim _semaphore = new SemaphoreSlim(1, 1);
-        private readonly string _path = "async_data.json";
+        private readonly IRepository<T> _repository;
+
+        // Впровадження залежності через конструктор
+        public GenericCrudServiceAsync(IRepository<T> repository)
+        {
+            _repository = repository;
+        }
 
         public async Task<bool> CreateAsync(T element)
         {
-            await _semaphore.WaitAsync();
-            try { _items.Add(element); return true; }
-            finally { _semaphore.Release(); }
+            await _repository.AddAsync(element);
+            return true;
         }
 
-        public async Task<IEnumerable<T>> ReadAllAsync() => _items;
+        public async Task<IEnumerable<T>> ReadAllAsync() 
+            => await _repository.GetAllAsync();
 
-        public async Task<IEnumerable<T>> ReadAllAsync(int page, int amount) => 
-            _items.Skip((page - 1) * amount).Take(amount);
-
-        public async Task<T> ReadAsync(Guid id) => 
-            _items.FirstOrDefault(x => (Guid)x.GetType().GetProperty("Id")?.GetValue(x) == id);
-
-        public async Task<bool> SaveAsync()
+        public async Task<IEnumerable<T>> ReadAllAsync(int page, int amount)
         {
-            await _semaphore.WaitAsync();
-            try {
-                var json = JsonSerializer.Serialize(_items, new JsonSerializerOptions { WriteIndented = true });
-                await File.WriteAllTextAsync(_path, json);
-                return true;
-            } finally { _semaphore.Release(); }
+            var all = await _repository.GetAllAsync();
+            return all.Skip((page - 1) * amount).Take(amount);
         }
 
-        public async Task<bool> UpdateAsync(T element) => true;
-        public async Task<bool> RemoveAsync(T element) => true;
+        public async Task<T> ReadAsync(int id) 
+            => await _repository.GetByIdAsync(id);
 
-        public IEnumerator<T> GetEnumerator() => _items.GetEnumerator();
+        public async Task<bool> UpdateAsync(T element)
+        {
+            await _repository.Update(element);
+            return true;
+        }
+
+        public async Task<bool> RemoveAsync(T element)
+        {
+            await _repository.Delete(element);
+            return true;
+        }
+
+        // Реалізація IEnumerable (беремо дані з репозиторію)
+        public IEnumerator<T> GetEnumerator() 
+            => _repository.GetAllAsync().GetAwaiter().GetResult().GetEnumerator();
+
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
     }
 }
